@@ -11,9 +11,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List toDoList = [
-    ["Quiz 3", false],
-    ["Quiz 9", false],
-    ["Make quest 9", false],
+    ["Task 1", false],
   ];
 
   final _controller = TextEditingController();
