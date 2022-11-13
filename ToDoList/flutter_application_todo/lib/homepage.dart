@@ -10,11 +10,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List toDoList = [
-    ["Task-1", false],
-  ];
+  List toDoList = [];
 
   final _controller = TextEditingController();
+  int count = 0;
 
   void checkBoxChanged(bool? value, int index) {
     setState(() {
@@ -49,12 +48,14 @@ class _HomePageState extends State<HomePage> {
         );
       },
     );
+    count++;
   }
 
   void deleteTask(int index) {
     setState(() {
       toDoList.removeAt(index);
     });
+    count--;
   }
 
   @override
@@ -62,9 +63,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 202, 205, 203),
       appBar: AppBar(
-        title: const Text("My to do list"),
         elevation: 0,
-        foregroundColor: Colors.black,
         backgroundColor: Color.fromARGB(255, 202, 205, 203),
       ),
       floatingActionButton: FloatingActionButton(
@@ -75,19 +74,43 @@ class _HomePageState extends State<HomePage> {
           color: Colors.deepPurple,
         ),
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(20),
-        itemCount: toDoList.length,
-        itemBuilder: (context, index) {
-          return ToDoContainer(
-            task: toDoList[index][0],
-            taskCompleted: toDoList[index][1],
-            onChanged: (value) => checkBoxChanged(value, index),
-            deleteFunction: () {
-              deleteTask(index);
-            },
-          );
-        },
+      body: Container(
+        padding: const EdgeInsets.all(24),
+        margin: const EdgeInsets.only(bottom: 12),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
+              'To do List',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 40,
+                  color: Colors.black),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              ' $count tasks',
+              style: const TextStyle(fontSize: 18, color: Colors.black),
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: ListView.builder(
+                itemCount: toDoList.length,
+                itemBuilder: (context, index) {
+                  return ToDoContainer(
+                    task: toDoList[index][0],
+                    taskCompleted: toDoList[index][1],
+                    onChanged: (value) => checkBoxChanged(value, index),
+                    deleteFunction: () {
+                      deleteTask(index);
+                    },
+                  );
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
